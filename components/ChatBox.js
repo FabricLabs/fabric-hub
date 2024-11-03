@@ -748,7 +748,7 @@ class ChatBox extends React.Component {
                     <Feed.User>
                       <a href={'/users/' + message.author}>{message.author || message.user_id}</a>{" "}
                     </Feed.User>
-                    <Feed.Date as='abbr' title={message.updated_at} class='relative'>{toRelativeTime(message.updated_at)}</Feed.Date>
+                    <Feed.Date as='abbr' title={message.updated_at} className='relative'>{toRelativeTime(message.updated_at)}</Feed.Date>
                     {message.role === "assistant" && (
                       <div className="controls info-icon">
                         <Button.Group basic size='mini'>
@@ -909,12 +909,12 @@ class ChatBox extends React.Component {
           onSubmit={this.handleSubmit.bind(this)}
           loading={loading}>
           <Form.Input>
-            {this.props.includeAttachments && (
-              <div class='ui huge left attached icon button' onClick={this.handleAttachmentIntent}>
+            {/* this.props.includeAttachments && (
+              <div className='ui huge left attached icon button' onClick={this.handleAttachmentIntent}>
                 <input hidden type='file' name='file' accept={ALLOWED_UPLOAD_TYPES.join(',')} onChange={this.handleFileChange} />
                 <Icon name='paperclip' color='grey' style={{ color: this.state.isTextareaFocused ? 'grey' : 'grey', cursor: 'pointer' }} />
               </div>
-            )}
+            ) */}
             <input hidden name='context' value={JSON.stringify(this.props.context, null, '  ')} />
             <TextareaAutosize
               id="primary-query"
@@ -937,14 +937,14 @@ class ChatBox extends React.Component {
               onBlur={this.handleTextareaBlur}
               style={inputStyle}
             />
-            <Icon
+            {/* <Icon
               name="microphone icon"
               color="grey"
               className='microphone icon'
               onClick={() => this.handleMicrophoneClick(this)}
               //this inline style is necessary to make the icon look lighter when the textarea is not focused
               style={{ color: this.state.isTextareaFocused ? 'grey' : 'lightgrey' }}
-            />
+            /> */}
           </Form.Input>
         </Form>
       </section>

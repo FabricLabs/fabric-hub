@@ -30,6 +30,7 @@ const {
   ENABLE_CONVERSATION_SIDEBAR,
   ENABLE_DOCUMENTS,
   ENABLE_FEEDBACK_BUTTON,
+  ENABLE_NETWORK,
   ENABLE_TASKS,
   ENABLE_UPLOADS,
   ENABLE_WALLET,
@@ -38,12 +39,10 @@ const {
   ENABLE_PERSON_SEARCH
 } = require('../constants');
 
-// TODO: migrate this to constants.js
-const ENABLE_NETWORK = true;
-
 // Components
 const Home = require('./Home');
 const ContractHome = require('./ContractHome');
+const ConversationsList = require('./ConversationsList.js');
 const NetworkHome = require('./NetworkHome');
 const Library = require('./Library');
 const DocumentHome = require('./DocumentHome');
@@ -55,7 +54,8 @@ const Settings = require('./Settings');
 // const AdminSettings = require('./AdminSettings');
 const TermsOfUse = require('./TermsOfUse');
 const InformationSidebar = require('./InformationSidebar');
-// const HelpBox = require('./HelpBox');
+const FeedbackBox = require('./FeedbackBox');
+const HelpBox = require('./HelpBox');
 
 // Fabric Bridge
 const Bridge = require('./Bridge');
@@ -454,7 +454,6 @@ class Dashboard extends React.Component {
   //====================================================//
 
   render () {
-    // const {location, params, navigate} = this.props;
     const USER_IS_ADMIN = this.props.auth.isAdmin || false;
     const USER_IS_ALPHA = this.props.auth.isAlpha || false;
     const USER_IS_BETA = this.props.auth.isBeta || false;
@@ -516,7 +515,7 @@ class Dashboard extends React.Component {
                   </div>
                 </Menu.Item>
               )}
-              {/* <Popup
+              <Popup
                 mouseEnterDelay={USER_HINT_TIME_MS}
                 position='right center'
                 trigger={(
@@ -533,8 +532,8 @@ class Dashboard extends React.Component {
                 <Popup.Content>
                   <p></p>
                 </Popup.Content>
-              </Popup> */}
-              <Menu.Item as={Link} to='/conversations' onClick={() => this.handleMenuItemClick('conversations')} className='expand-menu'>
+              </Popup>
+              {/* <Menu.Item as={Link} to='/conversations' onClick={() => this.handleMenuItemClick('conversations')} className='expand-menu'>
                 <div className='col-center'>
                   <Icon name='comment alternate' size='large' />
                   <p className='icon-label'>Chat</p>
@@ -542,13 +541,7 @@ class Dashboard extends React.Component {
                 <div className='expand-icon'>
                   {(openSectionBar) ? null : <Icon name='right chevron' className='fade-in' size='small' />}
                 </div>
-              </Menu.Item>
-              {ENABLE_CONVERSATION_SIDEBAR && (
-                <Menu.Item as={Link} to="/conversations" onClick={() => this.handleMenuItemClick('conversations')}>
-                  <Icon name='comment alternate outline' size='large' />
-                  <p className='icon-label'>Conversations</p>
-                </Menu.Item>
-              )}
+              </Menu.Item> */}
               {ENABLE_UPLOADS && (
                 <Menu.Item as={Link} to='/uploads' onClick={this.closeSidebars}>
                   <Icon name='upload' size='large'/>
@@ -567,7 +560,7 @@ class Dashboard extends React.Component {
                   <p className='icon-label'>Library</p>
                 </Menu.Item>
               )}
-              {ENABLE_NETWORK && USER_IS_ADMIN && (
+              {ENABLE_NETWORK && (
                 <Menu.Item as={Link} to='/peers' onClick={this.closeSidebars}>
                   <Icon name='globe' size='large'/>
                   <p className='icon-label'>Network</p>

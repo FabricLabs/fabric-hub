@@ -17,7 +17,7 @@ module.exports = Object.assign({}, defaults, {
   peering: true,
   peers: [
     'hub.fabric.pub:7777',
-    'beta.jeeves.dev:7777'
+    'sensemaker.io:7777'
   ],
   port: process.env.FABRIC_PORT || 7777,
   resources: {

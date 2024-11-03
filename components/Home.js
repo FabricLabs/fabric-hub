@@ -34,7 +34,7 @@ class Home extends React.Component {
           <Header as='h1'>Welcome home, <abbr>{this.props.auth.username}</abbr>.</Header>
           <p>You have <strong>{this.props.unreadMessageCount || 0}</strong> unread messages.</p>
         </Segment>
-        <QueryForm
+        {/* <QueryForm
           fetchConversations={this.props.fetchConversations}
           getMessages={this.props.getMessages}
           submitMessage={this.props.submitMessage}
@@ -50,7 +50,7 @@ class Home extends React.Component {
           messageInfo={this.props.messageInfo}
           thumbsUp={this.props.thumbsUp}
           thumbsDown={this.props.thumbsDown}
-        />
+        /> */}
       </sensemaker-home>
     );
   }
