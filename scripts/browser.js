@@ -16,7 +16,7 @@ const { Provider, connect } = require('react-redux');
 const toRelativeTime = require('../functions/toRelativeTime');
 
 // Components
-const HubUI = require('../components/HubUI');
+const HubInterface = require('../components/HubInterface');
 
 // Settings
 const settings = {
@@ -77,7 +77,7 @@ async function main (input = {}) {
 
   console.debug('[HUB]', 'Connecting UI...');
   const connector = connect(mapStateToProps, actions);
-  const ConnectedUI = connector(HubUI);
+  const ConnectedUI = connector(HubInterface);
 
   // ### DOM Attachment
   // Render

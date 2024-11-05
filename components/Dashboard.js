@@ -451,16 +451,10 @@ class Dashboard extends React.Component {
     toast('a file has finishing uploading', helpMessageToastEmitter);
   }
 
-  //====================================================//
-
   render () {
     const USER_IS_ADMIN = this.props.auth.isAdmin || false;
     const USER_IS_ALPHA = this.props.auth.isAlpha || false;
     const USER_IS_BETA = this.props.auth.isBeta || false;
-
-    // const USER_IS_ADMIN = true;
-    // const USER_IS_ALPHA = true;
-    // const USER_IS_BETA = true;
     const {
       openSectionBar,
       resetInformationSidebar,
@@ -471,8 +465,7 @@ class Dashboard extends React.Component {
       documentInfo,
       documentSections,
       matterTitle,
-      informationSidebarOpen,
-      openLibrary,
+      informationSidebarOpen
     } = this.state;
 
     // const sidebarStyle = this.state.sidebarCollapsed ? { width: 'auto', position: 'relative' } : {position: 'relative'};
@@ -704,46 +697,42 @@ class Dashboard extends React.Component {
             )}
           </Container>
         </div>
-        {ENABLE_FEEDBACK_BUTTON && (
-          <div>
-            <div id='feedback-button'>
-            {this.state.helpNotification ?
-              (<Icon
-                size='big'
-                // name='question circle outline'
-                name={this.state.helpBoxOpen ? 'close' : 'bell outline'}
-                className='red jiggle-animation'
-                onClick={() => this.toggleHelpBox()}
-              />) :
-              (<Icon
-                size='big'
-                // name='question circle outline'
-                name={this.state.helpBoxOpen ? 'close' : 'question circle outline'}
-                // id='feedback-button'
-                className='grey'
-                onClick={() => this.toggleHelpBox()}
-              />)}
-          </div>
-          {/* <FeedbackBox
-            open={this.state.helpBoxOpen}
-            toggleHelpBox={this.toggleHelpBox}
-            feedbackSection={true}
-            sendFeedback={this.props.sendFeedback}
-            feedback={this.props.feedback}
-          /> */}
-          {/* <HelpBox
-            open={this.state.helpBoxOpen}
-            fetchHelpConversations={this.props.fetchHelpConversations}
-            fetchHelpMessages={this.props.fetchHelpMessages}
-            sendHelpMessage={this.props.sendHelpMessage}
-            markMessagesRead={this.props.markMessagesRead}
-            clearHelpMessages={this.props.clearHelpMessages}
-            help={this.props.help}
-            notification={this.state.helpNotification}
-            stopNotification={() => this.setState({ helpNotification: false })}
-          /> */}
-          </div>
-        )}
+        <div id='feedback-button'>
+          {this.state.helpNotification ?
+            (<Icon
+              size='big'
+              // name='question circle outline'
+              name={this.state.helpBoxOpen ? 'close' : 'bell outline'}
+              className='red jiggle-animation'
+              onClick={() => this.toggleHelpBox()}
+            />) :
+            (<Icon
+              size='big'
+              // name='question circle outline'
+              name={this.state.helpBoxOpen ? 'close' : 'question circle outline'}
+              // id='feedback-button'
+              className='grey'
+              onClick={() => this.toggleHelpBox()}
+            />)}
+        </div>
+        <HelpBox
+          open={this.state.helpBoxOpen}
+          fetchHelpConversations={this.props.fetchHelpConversations}
+          fetchHelpMessages={this.props.fetchHelpMessages}
+          sendHelpMessage={this.props.sendHelpMessage}
+          markMessagesRead={this.props.markMessagesRead}
+          clearHelpMessages={this.props.clearHelpMessages}
+          help={this.props.help}
+          notification={this.state.helpNotification}
+          stopNotification={() => this.setState({ helpNotification: false })}
+        />
+        <FeedbackBox
+          open={this.state.helpBoxOpen}
+          toggleHelpBox={this.toggleHelpBox}
+          feedbackSection={true}
+          sendFeedback={this.props.sendFeedback}
+          feedback={this.props.feedback}
+        />
         <InformationSidebar
           visible={informationSidebarOpen}
           toggleInformationSidebar={this.toggleInformationSidebar}
