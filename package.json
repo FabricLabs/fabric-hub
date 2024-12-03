@@ -4,7 +4,7 @@
   "description": "Peer rendezvous for Fabric.",
   "main": "services/hub.js",
   "engines": {
-    "node": "18.19.0"
+    "node": "18.19.1"
   },
   "scripts": {
     "build": "npm run build:browser",
@@ -72,8 +72,8 @@
     "react-toastify": "=10.0.5",
     "redux": "=4.2.1",
     "redux-thunk": "=2.4.2",
-    "semantic-ui-react": "=2.1.4",
+    "semantic-ui-react": "=2.1.5",
     "stream-browserify": "=3.0.0",
-    "webpack": "=5.79.0"
+    "webpack": "=5.97.0"
   }
 }

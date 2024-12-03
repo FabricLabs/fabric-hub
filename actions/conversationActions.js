@@ -23,7 +23,6 @@ const EDIT_TITLE_REQUEST = 'EDIT_TITLE_REQUEST';
 const EDIT_TITLE_SUCCESS = 'EDIT_TITLE_SUCCESS';
 const EDIT_TITLE_FAILURE = 'EDIT_TITLE_FAILURE';
 
-
 // Action creators
 const fetchConversationsRequest = () => ({ type: FETCH_CONVERSATIONS_REQUEST });
 const fetchConversationsSuccess = (conversations) => ({ type: FETCH_CONVERSATIONS_SUCCESS, payload: conversations });
@@ -113,9 +112,7 @@ const conversationTitleEdit = (id, title) => {
       dispatch(conversationTitleEditFailure(error));
     }
   }
-}
-
-
+};
 
 module.exports = {
   fetchConversation,
