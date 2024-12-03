@@ -15,13 +15,6 @@ module.exports = {
     // destroy: require('./contracts/destroy_contract'),
     // update: require('./contracts/update_contract')
   },
-  conversations: {
-    create: require('./conversations/create_conversation'),
-    view: require('./conversations/view_conversation'),
-    list: require('./conversations/list_conversations'),
-    // destroy: require('./conversations/destroy_conversation'),
-    // update: require('./conversations/update_conversation')
-  },
   messages: {
     create: require('./messages/create_message'),
     view: require('./messages/view_message'),

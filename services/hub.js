@@ -65,18 +65,12 @@ class Hub extends Service {
         { method: 'GET', route: '/contracts', handler: ROUTES.contracts.list.bind(this) },
         { method: 'GET', route: '/contracts/:id', handler: ROUTES.contracts.view.bind(this) },
         { method: 'POST', route: '/contracts', handler: ROUTES.contracts.create.bind(this) },
-        { method: 'GET', route: '/conversations', handler: ROUTES.conversations.list.bind(this) },
-        { method: 'GET', route: '/conversations/:id', handler: ROUTES.conversations.view.bind(this) },
-        { method: 'POST', route: '/conversations', handler: ROUTES.conversations.create.bind(this) },
-        { method: 'GET', route: '/messages', handler: ROUTES.messages.list.bind(this) },
-        { method: 'GET', route: '/messages/:id', handler: ROUTES.messages.view.bind(this) },
-        { method: 'POST', route: '/messages', handler: ROUTES.conversations.create.bind(this) },
         { method: 'POST', route: '/peers', handler: ROUTES.peers.create.bind(this) },
         { method: 'GET', route: '/peers', handler: ROUTES.peers.list.bind(this) },
         { method: 'GET', route: '/sessions', handler: ROUTES.sessions.list.bind(this) },
         { method: 'POST', route: '/sessions', handler: ROUTES.sessions.create.bind(this) },
         { method: 'GET', route: '/settings', handler: ROUTES.settings.list.bind(this) },
-        { method: 'PATCH', route: '/settings', handler: ROUTES.settings.update.bind(this) },
+        { method: 'PATCH', route: '/settings', handler: ROUTES.settings.update.bind(this) }
       ],
       commitments: [],
       constraints: {
@@ -264,6 +258,7 @@ class Hub extends Service {
 
   // TODO: upstream to @fabric/http (deprecate, should already exist there)
   _addRoute (options) {
+    console.debug('Adding route:', options);
     this.http._addRoute(options.method, options.route, options.handler);
     return this;
   }

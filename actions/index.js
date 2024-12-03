@@ -43,37 +43,12 @@ const {
   deleteInvitation,
 } = require('../actions/invitationActions');
 
-// ## Inquiries Actions
-const {
-  fetchInquiry,
-  fetchInquiries,
-  deleteInquiry,
-  createInquiry
-} = require('../actions/inquiriesActions');
-
-// ## Chat Actions
-const {
-  resetChat,
-  submitMessage,
-  regenAnswer,
-  getMessages,
-  getMessageInformation,
-} = require('../actions/chatActions');
-
 // ## Contract Actions
 const {
   fetchContracts,
   fetchContract,
   signContract
 } = require('../actions/contractActions');
-
-// ## Conversation Actions
-const {
-  fetchConversations,
-  fetchConversation,
-  fetchMatterConversations,
-  conversationTitleEdit,
-} = require('../actions/conversationActions');
 
 // ## Document Actions
 const {
@@ -111,27 +86,9 @@ const {
   searchGlobal,
 } = require('../actions/searchActions');
 
-// ## Feedback Actions
-const {
-  sendFeedback,
-} = require('../actions/feedbackActions');
-
-// ## Help Actions
-const {
-  fetchHelpConversations,
-  fetchAdminHelpConversations,
-  fetchHelpMessages,
-  sendHelpMessage,
-  markMessagesRead,
-  clearHelpMessages,
-} = require('../actions/helpActions');
-
 module.exports = {
   fetchContract: fetchContract,
   signContract: signContract,
-  fetchConversation: fetchConversation,
-  fetchConversations: fetchConversations,
-  conversationTitleEdit: conversationTitleEdit,
   fetchDocuments: fetchDocuments,
   fetchDocument: fetchDocument,
   fetchDocumentSections: fetchDocumentSections,
@@ -147,10 +104,6 @@ module.exports = {
   fetchFile: fetchFile,
   uploadFile: uploadFile,
   fetchUserFiles: fetchUserFiles,
-  fetchInquiry: fetchInquiry,
-  fetchInquiries: fetchInquiries,
-  deleteInquiry: deleteInquiry,
-  createInquiry: createInquiry,
   fetchInvitation: fetchInvitation,
   fetchInvitations: fetchInvitations,
   sendInvitation: sendInvitation,
@@ -174,19 +127,7 @@ module.exports = {
   createInvitation: createInvitation,
   editUsername: editUsername,
   editEmail: editEmail,
-  resetChat: resetChat,
-  submitMessage: submitMessage,
-  regenAnswer: regenAnswer,
-  getMessages: getMessages,
-  getMessageInformation: getMessageInformation,
   fetchAccounts: fetchAccounts,
   fetchAccount: fetchAccount,
-  searchGlobal: searchGlobal,
-  sendFeedback: sendFeedback,
-  fetchHelpConversations: fetchHelpConversations,
-  fetchAdminHelpConversations: fetchAdminHelpConversations,
-  fetchHelpMessages: fetchHelpMessages,
-  sendHelpMessage: sendHelpMessage,
-  markMessagesRead: markMessagesRead,
-  clearHelpMessages: clearHelpMessages
+  searchGlobal: searchGlobal
 };

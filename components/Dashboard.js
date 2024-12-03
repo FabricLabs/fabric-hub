@@ -27,35 +27,27 @@ const {
   RELEASE_DESCRIPTION,
   ENABLE_ALERTS,
   ENABLE_CHANGELOG,
-  ENABLE_CONVERSATION_SIDEBAR,
   ENABLE_DOCUMENTS,
-  ENABLE_FEEDBACK_BUTTON,
   ENABLE_NETWORK,
   ENABLE_TASKS,
   ENABLE_UPLOADS,
   ENABLE_WALLET,
   USER_HINT_TIME_MS,
-  USER_MENU_HOVER_TIME_MS,
   ENABLE_PERSON_SEARCH
 } = require('../constants');
 
 // Components
 const Home = require('./Home');
 const ContractHome = require('./ContractHome');
-const ConversationsList = require('./ConversationsList.js');
 const NetworkHome = require('./NetworkHome');
 const Library = require('./Library');
 const DocumentHome = require('./DocumentHome');
 const DocumentView = require('./DocumentView');
 const UserView = require('./UserView');
 const Changelog = require('./Changelog');
-// const Room = require('./Room');
 const Settings = require('./Settings');
 // const AdminSettings = require('./AdminSettings');
 const TermsOfUse = require('./TermsOfUse');
-const InformationSidebar = require('./InformationSidebar');
-const FeedbackBox = require('./FeedbackBox');
-const HelpBox = require('./HelpBox');
 
 // Fabric Bridge
 const Bridge = require('./Bridge');
@@ -138,32 +130,6 @@ class Dashboard extends React.Component {
 
     if (isAdmin) {
       this.props.syncRedisQueue();
-    }
-  }
-
-  // componentDidUpdate(prevProps) {
-  //   const {help} = this.props;
-  //   if (prevProps.help != help) {
-  //     if(help.conversation && help.conversations.length > 0){
-
-  //     }
-  //   }
-  // }
-
-  componentDidUpdate (prevProps) {
-    const { help } = this.props;
-    if (prevProps.help != help) {
-      if (help.conversations && help.conversations.length > 0) {
-        // Check if any conversation matches the condition
-        const hasUnreadAdminMessage = help.conversations.some(
-          instance => instance.last_message.help_role === 'admin' && instance.last_message.is_read === 0
-        );
-        // Set helpNotification state based on the result
-        this.setState({ helpNotification: hasUnreadAdminMessage });
-      } else {
-        // If there are no conversations, set helpNotification to false
-        this.setState({ helpNotification: false });
-      }
     }
   }
 
@@ -360,15 +326,6 @@ class Dashboard extends React.Component {
         this.setState({ openSectionBar: false });
         this.props.resetChat();
         break;
-      case 'conversations':
-        if (this.state.openConversations && this.state.openSectionBar) {
-          this.setState({ openSectionBar: false });
-        } else {
-          newState.openConversations = true;
-          this.setState({ openSectionBar: true });
-          this.props.resetChat();
-        }
-        break;
       case 'library':
         if (this.state.openLibrary && this.state.openSectionBar) {
           this.setState({ openSectionBar: false });
@@ -399,16 +356,6 @@ class Dashboard extends React.Component {
     const sound = new Audio(helpMessageSound);
 
     if (id == action.creator) {
-      if (action.type == 'HelpMsgAdmin') {
-        this.props.fetchHelpConversations();
-        if (this.state.helpBoxOpen) {
-          this.props.fetchHelpMessages(action.conversation_id);
-        }
-        //emit toast for user
-        sound.play().catch((error) => { console.error('Failed to play sound: ', error); });
-        toast('You have a message from an assistant!', helpMessageToastEmitter);
-      }
-
       if (action.type == 'IngestFile') {
         if (action.completed) {
           toast(<p>Your file <b>{action.filename}</b> has been ingested! </p>, helpMessageToastEmitter);
@@ -456,16 +403,7 @@ class Dashboard extends React.Component {
     const USER_IS_ALPHA = this.props.auth.isAlpha || false;
     const USER_IS_BETA = this.props.auth.isBeta || false;
     const {
-      openSectionBar,
-      resetInformationSidebar,
-      checkingMessageID,
-      thumbsUpClicked,
-      thumbsDownClicked,
-      documentSection,
-      documentInfo,
-      documentSections,
-      matterTitle,
-      informationSidebarOpen
+      openSectionBar
     } = this.state;
 
     // const sidebarStyle = this.state.sidebarCollapsed ? { width: 'auto', position: 'relative' } : {position: 'relative'};
@@ -506,51 +444,6 @@ class Dashboard extends React.Component {
                     <Icon name='tasks' size='large' />
                     <p className='icon-label'>Tasks</p>
                   </div>
-                </Menu.Item>
-              )}
-              <Popup
-                mouseEnterDelay={USER_HINT_TIME_MS}
-                position='right center'
-                trigger={(
-                  <Menu.Item as={Link} to='/conversations' onClick={() => this.handleMenuItemClick('conversations')} className='expand-menu'>
-                    <div className='col-center'>
-                      <Icon name='comment alternate' size='large' />
-                      <p className='icon-label'>Chat</p>
-                    </div>
-                    <div className='expand-icon'>
-                      <Icon name={(openSectionBar) ? 'left chevron' : 'right chevron'} size='small' />
-                    </div>
-                  </Menu.Item>
-                )}>
-                <Popup.Content>
-                  <p></p>
-                </Popup.Content>
-              </Popup>
-              {/* <Menu.Item as={Link} to='/conversations' onClick={() => this.handleMenuItemClick('conversations')} className='expand-menu'>
-                <div className='col-center'>
-                  <Icon name='comment alternate' size='large' />
-                  <p className='icon-label'>Chat</p>
-                </div>
-                <div className='expand-icon'>
-                  {(openSectionBar) ? null : <Icon name='right chevron' className='fade-in' size='small' />}
-                </div>
-              </Menu.Item> */}
-              {ENABLE_UPLOADS && (
-                <Menu.Item as={Link} to='/uploads' onClick={this.closeSidebars}>
-                  <Icon name='upload' size='large'/>
-                  <p className='icon-label'>Uploads</p>
-                </Menu.Item>
-              )}
-              {ENABLE_PERSON_SEARCH && (
-                <Menu.Item as={Link} to='/people' onClick={this.closeSidebars}>
-                  <Icon name='users' size='large'/>
-                  <p className='icon-label'>People</p>
-                </Menu.Item>
-              )}
-              {ENABLE_DOCUMENTS && USER_IS_ALPHA && (
-                <Menu.Item as={Link} to='/documents' onClick={this.closeSidebars}>
-                  <Icon name='book' size='large'/>
-                  <p className='icon-label'>Library</p>
                 </Menu.Item>
               )}
               {ENABLE_NETWORK && (
@@ -599,14 +492,9 @@ class Dashboard extends React.Component {
                   <Icon name='cog' size='large' />
                   <p className='icon-label'>Settings</p>
                 </Menu.Item>
-                {/* <Menu.Item as={Link} onClick={() => { this.handleLogout; this.closeSidebars }} id='logoutItem'>
-                  <Icon name='log out' size='large' />
-                  <p className='icon-label'>Log Out</p>
-                </Menu.Item> */}
               </div>
             </div>
           </Sidebar>
-          {/*SectionBar: bigger left sidebar that opens when we click on some of the sections */}
           <Sidebar as={Menu} animation='overlay' id="collapse-sidebar" icon='labeled' inverted vertical visible={openSectionBar} style={sidebarStyle} size='huge' onClick={() => { this.toggleInformationSidebar(); this.closeHelpBox(); }}>
             <div className='collapse-sidebar-arrow'>
               <Icon name='caret left' size='large' white className='fade-in' style={{ cursor: 'pointer' }} onClick={() => this.setState({ openSectionBar: false })} />
@@ -615,15 +503,6 @@ class Dashboard extends React.Component {
               onClick={() => { this.setState({ openSectionBar: false }); this.props.resetChat() }}>
               <Header className='dashboard-header'>
                 <div>
-                  <div>
-                    <Popup trigger={<Icon name='help' className='dashboard-help' />}>
-                      <Popup.Header>Need Help?</Popup.Header>
-                      <Popup.Content>
-                        <p>Send us an email: <a href="mailto:support@sensemaker.io">support@sensemaker.io</a></p>
-                      </Popup.Content>
-                    </Popup>
-                    {/* <Image src="/images/sensemaker-icon.png" style={{ height: 'auto', width: '45%', verticalAlign: 'top' }} /> */}
-                  </div>
                   <div>
                     <Popup trigger={<Icon name='circle' color='green' size='tiny' />}>
                       <Popup.Content>disconnected</Popup.Content>
@@ -641,7 +520,6 @@ class Dashboard extends React.Component {
                   resetChat={this.props.resetChat}
                   fetchConversations={this.props.fetchConversations}
                   auth={this.props.auth}
-                  conversations={this.props.conversations}
                 />
               </section>
             )}
@@ -667,23 +545,7 @@ class Dashboard extends React.Component {
             {this.state.isLoading ? null : (
               <Routes>
                 <Route path="*" element={<Navigate to='/' replace />} />
-                <Route path="/" element={
-                  <Home
-                    auth={this.props.auth}
-                    fetchConversations={this.props.fetchConversations}
-                    getMessages={this.props.getMessages}
-                    submitMessage={this.props.submitMessage}
-                    regenAnswer={this.props.regenAnswer}
-                    onMessageSuccess={this.props.onMessageSuccess}
-                    resetChat={this.props.resetChat}
-                    chat={this.props.chat}
-                    getMessageInformation={this.props.getMessageInformation}
-                    resetInformationSidebar={this.resetInformationSidebar}
-                    messageInfo={this.messageInfo}
-                    thumbsUp={this.thumbsUp}
-                    thumbsDown={this.thumbsDown}
-                  />
-                } />
+                <Route path="/" element={<Home auth={this.props.auth} />} />
                 <Route path='/settings/library' element={<Library />} />
                 <Route path="/updates" element={<Changelog {...this.props} />} />
                 <Route path="/documents" element={<DocumentHome documents={this.props.documents} uploadDocument={this.props.uploadDocument} fetchDocuments={this.props.fetchDocuments} searchDocument={this.props.searchDocument} chat={this.props.chat} resetChat={this.props.resetChat} files={this.props.files} uploadFile={this.props.uploadFile} />} />
@@ -697,55 +559,6 @@ class Dashboard extends React.Component {
             )}
           </Container>
         </div>
-        <div id='feedback-button'>
-          {this.state.helpNotification ?
-            (<Icon
-              size='big'
-              // name='question circle outline'
-              name={this.state.helpBoxOpen ? 'close' : 'bell outline'}
-              className='red jiggle-animation'
-              onClick={() => this.toggleHelpBox()}
-            />) :
-            (<Icon
-              size='big'
-              // name='question circle outline'
-              name={this.state.helpBoxOpen ? 'close' : 'question circle outline'}
-              // id='feedback-button'
-              className='grey'
-              onClick={() => this.toggleHelpBox()}
-            />)}
-        </div>
-        <HelpBox
-          open={this.state.helpBoxOpen}
-          fetchHelpConversations={this.props.fetchHelpConversations}
-          fetchHelpMessages={this.props.fetchHelpMessages}
-          sendHelpMessage={this.props.sendHelpMessage}
-          markMessagesRead={this.props.markMessagesRead}
-          clearHelpMessages={this.props.clearHelpMessages}
-          help={this.props.help}
-          notification={this.state.helpNotification}
-          stopNotification={() => this.setState({ helpNotification: false })}
-        />
-        <FeedbackBox
-          open={this.state.helpBoxOpen}
-          toggleHelpBox={this.toggleHelpBox}
-          feedbackSection={true}
-          sendFeedback={this.props.sendFeedback}
-          feedback={this.props.feedback}
-        />
-        <InformationSidebar
-          visible={informationSidebarOpen}
-          toggleInformationSidebar={this.toggleInformationSidebar}
-          resetInformationSidebar={resetInformationSidebar}
-          checkingMessageID={checkingMessageID}
-          thumbsUpClicked={thumbsUpClicked}
-          thumbsDownClicked={thumbsDownClicked}
-          documentSection={documentSection}
-          documentInfo={documentInfo}
-          documentSections={documentSections}
-          matterTitle={matterTitle}
-          onClick={() => { this.setState({ openSectionBar: false }); this.closeHelpBox(); }}
-        />
         <ToastContainer />
       </sensemaker-dashboard>
     );
