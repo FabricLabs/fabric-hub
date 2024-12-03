@@ -71,23 +71,6 @@ class Dashboard extends React.Component {
         progress: 0,
         isLoading: true,
         isLoggingOut: false,
-        openLibrary: true,
-        openConversations: false,
-        openSectionBar: false,
-        helpBoxOpen: false,
-        helpConversationUpdate: 0, //this value is used to tell the help admin chat which conversation got a new message from user (from bridge), to update the conversation
-
-        //iformation Sidebar states
-        informationSidebarOpen: false,
-        checkingMessageID: 0,
-        documentSection: false,
-        documentInfo: null,
-        documentSections: null, //these are the actual sections from a specific document
-        matterTitle: '',
-        resetInformationSidebar: false,
-        thumbsUpClicked: false,
-        thumbsDownClicked: false,
-        helpNotification: false,
         steps: [
           {
             target: '.my-first-step',
@@ -118,9 +101,6 @@ class Dashboard extends React.Component {
     // this.startProgress();
 
     // $('.ui.sidebar').sidebar();
-
-    this.props.fetchConversations();
-    this.props.fetchHelpConversations();
 
     // Simulate a loading delay
     setTimeout(() => {
@@ -176,143 +156,6 @@ class Dashboard extends React.Component {
     this.setState({ search: e.target.value });
   };
 
-  toggleHelpBox = () => {
-    if (!this.state.helpBoxOpen) {
-      this.props.fetchHelpConversations();
-    }
-    this.setState({ helpNotification: false, });
-    this.setState(prevState => ({
-      helpBoxOpen: !prevState.helpBoxOpen,
-    }));
-  };
-
-  //========= Sidebar Functions ==========//
-
-  //closes the right panel, informationSidebar and resets its states
-  toggleInformationSidebar = () => {
-    this.setState({
-      informationSidebarOpen: false,
-      checkingMessageID: null,
-      documentSection: false,
-      documentInfo: null,
-      matterTitle: '',
-      resetInformationSidebar: false,
-      thumbsUpClicked: false,
-      thumbsDownClicked: false,
-    });
-  };
-
-  //closes left and right sidebars
-  closeSidebars = () => {
-    this.setState({ openSectionBar: false });
-    this.closeHelpBox();
-    if (this.state.informationSidebarOpen) {
-      this.toggleInformationSidebar();
-    }
-  }
-
-  //to handle the flag that resets the information in the informationSidebar
-  resetInformationSidebar = () => {
-    this.setState(prevState => ({ resetInformationSidebar: !prevState.resetInformationSidebar }));
-  }
-
-  //this one triggers when the "i" icon in a chat message is clicked
-  messageInfo = (ID) => {
-    let newState = {
-      thumbsUpClicked: false,
-      thumbsDownClicked: false,
-      checkingMessageID: ID,
-      informationSidebarOpen: true,
-      documentSection: false,
-      documentInfo: null,
-      matterTitle: '',
-      openSectionBar: false,
-    };
-
-    // if sidebar is open and checkingMessageID === actual clicked message,
-    // and none of thumbs was active, then closes sidebar (because it means you clicked "I"
-    // icon twice for the same message)
-    if (this.state.informationSidebarOpen && ID === this.state.checkingMessageID &&
-      !this.state.thumbsUpClicked && !this.state.thumbsDownClicked) {
-      newState.informationSidebarOpen = false;
-    }
-
-    this.setState(newState);
-    this.resetInformationSidebar();
-  }
-
-  // thumbs up handler from a chat message
-  thumbsUp = (ID) => {
-    this.setState({ thumbsDownClicked: false, openSectionBar: false, });
-
-    // if thumbsUp was clicked for this message already, close sidebar
-    if (this.state.thumbsUpClicked && this.state.checkingMessageID === ID) {
-      this.setState({
-        informationSidebarOpen: false,
-        thumbsUpClicked: false,
-        thumbsDownClicked: false
-      });
-    } else {
-      //else, open (or keep open) sidebar, and fix states
-      this.setState({
-        thumbsUpClicked: true,
-        thumbsDownClicked: false,
-        documentSection: false,
-        documentInfo: null,
-        openSectionBar: false,
-        checkingMessageID: ID,
-        informationSidebarOpen: true
-      });
-
-    }
-    this.resetInformationSidebar();
-  };
-
-  // thumbs down handler from a chat message
-  thumbsDown = (ID) => {
-    this.setState({ thumbsUpClicked: false, openSectionBar: false, });
-    // if thumbsDown was clicked for this message already, close sidebar
-    if (this.state.thumbsDownClicked && this.state.checkingMessageID === ID) {
-      this.setState({
-        informationSidebarOpen: false,
-        thumbsUpClicked: false,
-        thumbsDownClicked: false
-      });
-    } else {
-      //else, open (or keep open) sidebar, and fix states
-      this.setState({
-        thumbsUpClicked: false,
-        thumbsDownClicked: true,
-        documentSection: false,
-        documentInfo: null,
-        openSectionBar: false,
-        checkingMessageID: ID,
-        informationSidebarOpen: true
-      });
-    }
-    this.resetInformationSidebar();
-  };
-
-  // triggers when a document from a matter is clicked to display
-  documentInfoSidebar = (documentInfo, documentSections, matterTitle) => {
-    this.setState({ openSectionBar: false });
-    if (this.state.documentInfo !== documentInfo) {
-      this.setState({
-        informationSidebarOpen: true,
-        checkingMessageID: null,
-        thumbsUpClicked: false,
-        thumbsDownClicked: false,
-        documentSection: true,
-        documentInfo: documentInfo,
-        documentSections: documentSections,
-        matterTitle: matterTitle,
-      });
-    } else {
-      this.toggleInformationSidebar();
-    }
-    this.resetInformationSidebar();
-  }
-
   //this is the handler that sets which section is opened in the section bar in the left
   handleMenuItemClick = (menu) => {
     const newState = {
@@ -347,10 +190,6 @@ class Dashboard extends React.Component {
     this.setState(newState);
   };
 
-  closeHelpBox = () => {
-    this.setState({ helpBoxOpen: false });
-  }
-
   responseCapture = (action) => {
     const { id, isAdmin } = this.props.auth;
     const sound = new Audio(helpMessageSound);
@@ -365,16 +204,6 @@ class Dashboard extends React.Component {
 
       if (action.type == 'IngestDocument' && isAdmin) {
         toast(<p>Your document "{action.title}"" has been ingested!  You can check it <a href={`${window.location.protocol}//${window.location.hostname}:${window.location.port}/documents/${action.fabric_id}`}>Here</a></p>, helpMessageToastEmitter);
-      }
-    }
-
-    if (action.type == 'HelpMsgUser' && isAdmin) {
-      this.setState({ helpConversationUpdate: action.conversation_id });
-      this.props.fetchAdminHelpConversations();
-      //emit toast for admin
-      if (this.props.location.pathname !== '/settings/admin') {
-        sound.play().catch((error) => { console.error('Failed to play sound: ', error); });
-        toast(`An user sent a message asking for assistance`, helpMessageToastEmitter);
       }
     }
 
@@ -514,15 +343,6 @@ class Dashboard extends React.Component {
                 </div>
               </Header>
             </Menu.Item>
-            {this.state.openConversations && (
-              <section className='fade-in'>
-                <ConversationsList
-                  resetChat={this.props.resetChat}
-                  fetchConversations={this.props.fetchConversations}
-                  auth={this.props.auth}
-                />
-              </section>
-            )}
             <div style={{ flexGrow: 1 }}></div> {/* Spacer */}
             <section>
               <Menu.Item style={{ borderBottom: 0 }}>

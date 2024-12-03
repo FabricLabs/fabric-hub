@@ -11,7 +11,6 @@ const {
 } = require('semantic-ui-react');
 
 const MenuBar = require('./MenuBar');
-const QueryForm = require('./QueryForm');
 
 class Home extends React.Component {
   componentDidUpdate (prevProps) {
@@ -34,23 +33,6 @@ class Home extends React.Component {
           <Header as='h1'>Welcome home, <abbr>{this.props.auth.username}</abbr>.</Header>
           <p>You have <strong>{this.props.unreadMessageCount || 0}</strong> unread messages.</p>
         </Segment>
-        {/* <QueryForm
-          fetchConversations={this.props.fetchConversations}
-          getMessages={this.props.getMessages}
-          submitMessage={this.props.submitMessage}
-          onMessageSuccess={this.props.onMessageSuccess}
-          regenAnswer={this.props.regenAnswer}
-          resetChat={this.props.resetChat}
-          chat={this.props.chat}
-          placeholder='Ask me anything...'
-          includeAttachments={true}
-          includeFeed={false}
-          getMessageInformation={this.props.getMessageInformation}
-          resetInformationSidebar={this.props.resetInformationSidebar}
-          messageInfo={this.props.messageInfo}
-          thumbsUp={this.props.thumbsUp}
-          thumbsDown={this.props.thumbsDown}
-        /> */}
       </sensemaker-home>
     );
   }

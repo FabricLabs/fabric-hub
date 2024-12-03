@@ -25,7 +25,6 @@ const {
 } = require('semantic-ui-react');
 
 // Components
-const ChatBox = require('./ChatBox');
 const DocumentUploader = require('./DocumentUploader');
 
 // Functions
@@ -121,16 +120,6 @@ class DocumentHome extends React.Component {
               ))) : (<p>No results found</p>)
             )}
           </List>
-          <ChatBox
-            {...this.props}
-            messagesEndRef={this.messagesEndRef}
-            includeFeed={false}
-            placeholder={'Ask about these documents...'}
-            resetInformationSidebar={this.props.resetInformationSidebar}
-            messageInfo={this.props.messageInfo}
-            thumbsUp={this.props.thumbsUp}
-            thumbsDown={this.props.thumbsDown}
-          />
         </Segment>
       </fabric-document-home>
     );

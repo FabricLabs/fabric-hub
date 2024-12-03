@@ -100,29 +100,6 @@ class HubUI extends React.Component {
     });
   }
 
-  handleConversationSubmit = async (message) => {
-    try {
-      const response = await fetch('/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.props.token}`
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        this.props.fetchConversations();
-      } else {
-        throw new Error(data.message || 'Message submission failed');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   componentDidMount () {
     //if the user was already logged in previously, we reload the session
     const dbRequest = indexedDB.open(BROWSER_DATABASE_NAME, 1);
@@ -201,20 +178,10 @@ class HubUI extends React.Component {
                 <Dashboard
                   auth={this.props.auth}
                   onLogoutSuccess={this.handleLogout}
-                  onMessageSuccess={this.handleMessageSuccess}
                   fetchContract={this.props.fetchContract}
-                  fetchConversation={this.props.fetchConversation}
-                  fetchConversations={this.props.fetchConversations}
                   fetchAdminStats={this.props.fetchAdminStats}
-                  handleConversationSubmit={this.handleConversationSubmit}
                   register={this.props.register}
-                  resetChat={this.props.resetChat}
-                  submitMessage={this.props.submitMessage}
                   contracts={this.props.contracts}
-                  conversations={this.props.conversations}
-                  conversation={this.props.conversation}
-                  courts={this.props.courts}
-                  chat={this.props.chat}
                   isAdmin={this.props.auth.isAdmin}
                   isCompliant={this.props.auth.isCompliant}
                   {...this.props}

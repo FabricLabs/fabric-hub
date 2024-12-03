@@ -52,26 +52,18 @@ async function main (input = {}) {
   const mapStateToProps = (state) => {
     return {
       auth: state.auth,
-      chat: state.chat,
       accounts: state.accounts,
       contracts: state.contracts,
-      conversation: state.conversations.conversation,
-      conversations: state.conversations.conversations,
-      conversationsLoading: state.conversations.loading,
       documents: state.documents,
       files: state.files,
       error: state.auth.error,
-      inquiries: state.inquiries,
       invitation: state.invitation,
       isAuthenticated: state.auth.isAuthenticated,
       isAdmin: state.auth.isAdmin,
       isCompliant: state.auth.isCompliant,
-      isSending: state.chat.isSending,
       token: state.auth.token,
       stats: state.stats,
-      search: state.search,
-      feedback: state.feedback,
-      help: state.help
+      search: state.search
     }
   };
 
