@@ -17,6 +17,9 @@ const Token = require('@fabric/core/types/token'); // fabric tokens
 // Fabric HTTP
 const HTTPServer = require('@fabric/http/types/server');
 
+// Services
+const Matrix = require('@fabric/matrix');
+
 // Hub Services
 const Fabric = require('../services/fabric');
 // const Queue = require('../types/queue');
