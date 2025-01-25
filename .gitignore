@@ -105,3 +105,6 @@ dist
 
 # Fabric Schema Store
 stores/schemata
+
+# MacOS garbage
+.DS_Store

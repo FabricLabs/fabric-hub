@@ -1,6 +1,7 @@
 'use strict';
 
 const Site = require('@fabric/http/types/site');
+const Dashboard = require('./Dashboard');
 
 class Interface extends Site {
   _getHTML () {
