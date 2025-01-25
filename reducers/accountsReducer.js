@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   FETCH_ACCOUNT_REQUEST,
   FETCH_ACCOUNT_SUCCESS,
@@ -30,7 +32,7 @@ function accountsReducer (state = initialState, action) {
     case FETCH_ACCOUNTS_FAILURE:
       return { ...state, loading: false, error: action.payload };
     default:
-      console.warn('[HUB]', 'Unhandled action in accounts reducer:', action);
+      // No state change
       return state;
   }
 }
